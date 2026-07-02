@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* Reset and global layout */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background: radial-gradient(circle at center, #1e293b, #0f172a);
+    color: #f8fafc;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+}
+
+h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    background: linear-gradient(to right, #38bdf8, #34d399);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-transform: uppercase;
+}
+
+/* The Magic Fix: Using CSS Grid for a flawless 3x3 layout */
+.game {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 16px;
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+/* Modernized grid buttons */
+.box {
+    height: 16vmin;
+    width: 16vmin;
+    min-height: 80px;
+    min-width: 80px;
+    background: #1e293b;
+    border: 2px solid #334155;
+    border-radius: 12px;
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #38bdf8;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-transform: uppercase;
+}
+
+/* Hover effects for empty boxes */
+.box:hover:not(:disabled) {
+    background: #273549;
+    border-color: #38bdf8;
+    transform: translateY(-2px);
+    box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
+}
+
+/* Smooth scaling when a box is clicked/disabled */
+.box:disabled {
+    background: #0f172a;
+    border-color: #1e293b;
+    color: #94a3b8;
+    cursor: not-allowed;
+}
+
+/* Styling the Reset Button */
+#rst {
+    padding: 12px 28px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #0f172a;
+    background: linear-gradient(135deg, #34d399, #059669);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(52, 211, 153, 0.3);
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+#rst:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(52, 211, 153, 0.5);
+    filter: brightness(1.1);
+}
+
+#rst:active {
+    transform: translateY(0);
+}
+/* Winner Announcement Overlay (Hidden by default) */
+.winner-layer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 23, 42, 0.8);
+    backdrop-filter: blur(8px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease-in-out;
+}
+
+/* Card layout inside the popup */
+.winner-card {
+    background: #1e293b;
+    padding: 3rem 4rem;
+    border-radius: 20px;
+    border: 2px solid #34d399;
+    text-align: center;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), 
+                0 0 30px rgba(52, 211, 153, 0.2);
+    transform: scale(0.8);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.winner-card h2 {
+    font-size: 2.5rem;
+    color: #f8fafc;
+    margin-bottom: 0.5rem;
+}
+
+/* Big highlighted text showing who won */
+#winner-text {
+    font-size: 5rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    background: linear-gradient(to right, #38bdf8, #34d399);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: block;
+    margin-bottom: 1.5rem;
+    animation: pulse 1.5s infinite;
+}
+
+/* Utility class to display the popup via JS */
+.winner-layer.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.winner-layer.show .winner-card {
+    transform: scale(1);
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+    </style>
+</head>
+<body>
+    <main>
+        <h1>Tic-Tac-Toe</h1>
+    <div class="game">
+        <button id="b0" class="box">   </button>
+        <button id="b1" class="box">   </button>
+        <button id="b2" class="box">   </button>
+        <!-- <br> -->
+        <button id="b3" class="box">    </button>
+        <button id="b4" class="box"></button>
+        <button id="b5" class="box"></button>
+        <!-- <br> -->
+        <button id="b6" class="box"></button>
+        <button id="b7" class="box"></button>
+        <button id="b8" class="box"></button>
+    </div>
+
+    <button  id="rst">Resent the button</button>
+
+
+    <div class="winner-layer" id="win-screen">
+    <div class="winner-card">
+        <h2>🎉 VICTORY! 🎉</h2>
+        <span id="winner-text">X</span>
+    </div>
+</div>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
