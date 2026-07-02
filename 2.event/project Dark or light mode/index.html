@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Theme Toggle</title>
+    <style>
+        :root {
+            --bg-light: #f4f7fb;
+            --bg-dark: #1f2937;
+            --button-start: #6e8efb;
+            --button-end: #a777e3;
+            --shadow: 0 18px 40px rgba(15, 23, 42, 0.14);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: radial-gradient(circle at top, #ffffff 0%, var(--bg-light) 55%, #e8eef7 100%);
+            transition: background-color 0.4s ease, background 0.4s ease;
+            overflow: hidden;
+        }
+
+        button {
+            background: linear-gradient(135deg, var(--button-start), var(--button-end));
+            color: white;
+            border: none;
+            padding: 16px 30px;
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            text-transform: capitalize;
+            border-radius: 999px;
+            cursor: pointer;
+            box-shadow: var(--shadow), 0 6px 18px rgba(110, 142, 251, 0.28);
+            transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+            outline: none;
+            min-width: 160px;
+        }
+
+        button:hover {
+            transform: translateY(-2px) scale(1.01);
+            filter: brightness(1.02);
+            box-shadow: 0 22px 48px rgba(15, 23, 42, 0.18), 0 10px 24px rgba(110, 142, 251, 0.34);
+        }
+
+        button:active {
+            transform: translateY(1px) scale(0.99);
+        }
+
+        button:focus-visible {
+            box-shadow: 0 0 0 4px rgba(167, 119, 227, 0.25), var(--shadow);
+        }
+    </style>
+</head>
+<body>
+
+    <button>light mode</button>
+
+    <script src="script.js"></script>
+</body>
+</html>
